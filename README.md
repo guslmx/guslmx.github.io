@@ -83,7 +83,7 @@
         <div class="success-icon">🔓</div>
         <h2>Accès Autorisé</h2>
         <p>Félicitations, tu as débloqué le contenu !</p>
-        <p><em>(Écris ton message secret ici...)</em></p>
+        <p>tu peux passer à la suite</p>
     </div>
 
     <script>
