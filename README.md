@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Empêche les smartphones de créer des liens bleus automatiques -->
+    <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
     <title>Carte 21 - Machine</title>
     <style>
         /* STYLE GLOBAL */
@@ -15,25 +17,35 @@
             align-items: center;
             height: 100vh;
             color: white;
-            user-select: none; /* Empêche la sélection de texte */
+            user-select: none;
         }
 
         /* BANNIÈRE VERTE UNLOCK (Carte Machine) */
         .banner {
             width: 100%;
-            background-color: #4CAF50; /* Vert classique Unlock */
+            background-color: #4CAF50;
             color: white;
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
-            padding: 15px 0;
+            padding: 10px 0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.6);
             border-bottom: 4px solid #fff;
             position: fixed;
             top: 0;
             left: 0;
             z-index: 10;
-            letter-spacing: 2px;
+        }
+
+        /* LE LISERÉ BLANC AUTOUR DU 21 */
+        .cercle-21 {
+            display: inline-block;
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
         }
 
         /* CONTENEUR PRINCIPAL */
@@ -43,7 +55,7 @@
             align-items: center;
             justify-content: center;
             flex-grow: 1;
-            margin-top: 70px; /* Pour compenser la bannière fixe */
+            margin-top: 70px;
             width: 100%;
         }
 
@@ -60,18 +72,20 @@
         /* ÉCRAN DIGITAL */
         .screen {
             background-color: #0a1f0a;
-            color: #39ff14; /* Vert digital fluo */
+            color: #39ff14;
             font-family: 'Courier New', Courier, monospace;
             font-size: 40px;
             text-align: center;
-            padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
             letter-spacing: 10px;
             border: 3px solid #000;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
-            height: 45px;
-            line-height: 45px;
+            height: 60px; /* Hauteur fixe pour contenir les chiffres */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Empêche tout débordement */
         }
 
         /* CLAVIER NUMÉRIQUE */
@@ -103,7 +117,7 @@
         .key.clear { color: #d32f2f; }
         .key.enter { color: #388e3c; }
 
-        /* VUES DE RÉSULTAT (Masquées par défaut) */
+        /* VUES DE RÉSULTAT */
         .result-view {
             display: none;
             flex-direction: column;
@@ -117,12 +131,14 @@
         .result-view h2 {
             font-size: 32px;
             margin-bottom: 10px;
+            white-space: nowrap; /* Force le texte sur une seule ligne */
         }
 
         .result-view p {
             font-size: 22px;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             font-weight: normal;
+            margin-top: 0;
         }
 
         /* CERCLE GRIS CARTE 48 */
@@ -169,8 +185,10 @@
 </head>
 <body>
 
-    <!-- Bannière haut de carte -->
-    <div class="banner">21</div>
+    <!-- Bannière haut de carte avec liseré -->
+    <div class="banner">
+        <span class="cercle-21">21</span>
+    </div>
 
     <!-- ÉCRAN 1 : LE DIGICODE -->
     <div id="digicode-view" class="container">
@@ -203,7 +221,6 @@
     <!-- ÉCRAN 3 : ÉCHEC / PÉNALITÉ -->
     <div id="error-view" class="container result-view">
         <div class="penalty-icon">
-            <!-- Icône vectorielle de pénalité (Croix rouge classique) -->
             <svg viewBox="0 0 100 100" width="100" height="100">
                 <circle cx="50" cy="50" r="45" fill="#c0392b" stroke="#e74c3c" stroke-width="4"/>
                 <line x1="30" y1="30" x2="70" y2="70" stroke="white" stroke-width="12" stroke-linecap="round"/>
@@ -215,14 +232,12 @@
         <button class="retry-btn" onclick="resetDigicode()">Retour au digicode</button>
     </div>
 
-    <!-- JAVASCRIPT : Logique du cadenas -->
     <script>
         const secretCode = "7239";
         let currentCode = "";
         const screenEl = document.getElementById("screen");
 
         function updateScreen() {
-            // Remplit avec des tirets pour toujours afficher 4 caractères
             let display = currentCode.padEnd(4, "-");
             screenEl.innerText = display;
         }
@@ -240,13 +255,8 @@
         }
 
         function checkCode() {
-            // Ne rien faire si on n'a pas tapé 4 chiffres
             if (currentCode.length !== 4) return;
-
-            // Masque le digicode
             document.getElementById('digicode-view').style.display = 'none';
-
-            // Affiche le bon écran selon le résultat
             if (currentCode === secretCode) {
                 document.getElementById('success-view').style.display = 'flex';
             } else {
