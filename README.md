@@ -1,108 +1,265 @@
-# guslmx.github.io
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accès Sécurisé</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Carte 21 - Machine</title>
     <style>
+        /* STYLE GLOBAL */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: "Arial Black", "Segoe UI", Roboto, sans-serif;
+            background-color: #1a1a1a;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            user-select: none; /* Empêche la sélection de texte */
+        }
+
+        /* BANNIÈRE VERTE UNLOCK (Carte Machine) */
+        .banner {
+            width: 100%;
+            background-color: #4CAF50; /* Vert classique Unlock */
+            color: white;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 900;
+            padding: 15px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            border-bottom: 4px solid #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            letter-spacing: 2px;
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-            color: #333;
-        }
-        .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 85%;
-            width: 320px;
-        }
-        input[type="password"] {
+            flex-grow: 1;
+            margin-top: 70px; /* Pour compenser la bannière fixe */
             width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 20px;
-            box-sizing: border-box;
-            text-align: center;
-            letter-spacing: 4px;
         }
-        button {
-            background-color: #000;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
+
+        /* DIGICODE MÉTALLISÉ */
+        .digicode {
+            background: linear-gradient(135deg, #e6e6e6 0%, #b3b3b3 50%, #808080 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid #555;
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.7), 0 15px 30px rgba(0,0,0,0.8);
+            width: 280px;
+        }
+
+        /* ÉCRAN DIGITAL */
+        .screen {
+            background-color: #0a1f0a;
+            color: #39ff14; /* Vert digital fluo */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 40px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            letter-spacing: 10px;
+            border: 3px solid #000;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+            height: 45px;
+            line-height: 45px;
+        }
+
+        /* CLAVIER NUMÉRIQUE */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        /* BOUTONS MÉTALLIQUES */
+        .key {
+            background: linear-gradient(to bottom, #f9f9f9, #c4c4c4);
+            border: 2px solid #777;
+            border-radius: 10px;
+            font-size: 28px;
             font-weight: bold;
+            color: #222;
+            padding: 15px 0;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #666, 0 10px 15px rgba(0,0,0,0.3);
+            transition: all 0.1s;
         }
-        button:active { background-color: #333; }
-        #error-msg {
-            color: #d93025;
-            font-size: 14px;
+
+        .key:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #666, 0 4px 5px rgba(0,0,0,0.3);
+        }
+
+        .key.clear { color: #d32f2f; }
+        .key.enter { color: #388e3c; }
+
+        /* VUES DE RÉSULTAT (Masquées par défaut) */
+        .result-view {
             display: none;
-            margin-top: 10px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            width: 90%;
         }
-        #hidden-content {
-            display: none; /* Caché par défaut */
-        }
-        .success-icon {
-            font-size: 48px;
+
+        .result-view h2 {
+            font-size: 32px;
             margin-bottom: 10px;
         }
+
+        .result-view p {
+            font-size: 22px;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: normal;
+        }
+
+        /* CERCLE GRIS CARTE 48 */
+        .carte-cercle {
+            background: linear-gradient(135deg, #a0a0a0, #707070);
+            color: white;
+            font-size: 55px;
+            font-weight: 900;
+            width: 120px;
+            height: 120px;
+            line-height: 120px;
+            border-radius: 50%;
+            border: 4px solid #ddd;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+
+        /* ICÔNE PÉNALITÉ */
+        .penalty-icon {
+            margin-bottom: 10px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* BOUTON RETOUR POUR PÉNALITÉ */
+        .retry-btn {
+            background-color: #333;
+            color: white;
+            border: 2px solid #666;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        .retry-btn:active { background-color: #111; }
     </style>
 </head>
 <body>
 
-    <!-- ÉCRAN DE VERROUILLAGE -->
-    <div id="login-screen" class="container">
-        <h2>Zone Protégée</h2>
-        <p>Veuillez entrer le code PIN</p>
-        <!-- L'utilisateur tape le code ici -->
-        <input type="password" id="pin-input" placeholder="••••" maxlength="4">
-        <button onclick="checkPIN()">Déverrouiller</button>
-        <p id="error-msg">Code incorrect, réessayez.</p>
+    <!-- Bannière haut de carte -->
+    <div class="banner">21</div>
+
+    <!-- ÉCRAN 1 : LE DIGICODE -->
+    <div id="digicode-view" class="container">
+        <div class="digicode">
+            <div class="screen" id="screen">----</div>
+            <div class="keypad">
+                <button class="key" onclick="press('1')">1</button>
+                <button class="key" onclick="press('2')">2</button>
+                <button class="key" onclick="press('3')">3</button>
+                <button class="key" onclick="press('4')">4</button>
+                <button class="key" onclick="press('5')">5</button>
+                <button class="key" onclick="press('6')">6</button>
+                <button class="key" onclick="press('7')">7</button>
+                <button class="key" onclick="press('8')">8</button>
+                <button class="key" onclick="press('9')">9</button>
+                <button class="key clear" onclick="clearCode()">C</button>
+                <button class="key" onclick="press('0')">0</button>
+                <button class="key enter" onclick="checkCode()">OK</button>
+            </div>
+        </div>
     </div>
 
-    <!-- CONTENU CACHÉ (s'affiche uniquement si le code est bon) -->
-    <div id="hidden-content" class="container">
-        <div class="success-icon">🔓</div>
-        <h2>Accès Autorisé</h2>
-        <p>Félicitations, tu as débloqué le contenu !</p>
-        <p>tu peux passer à la suite</p>
+    <!-- ÉCRAN 2 : SUCCÈS -->
+    <div id="success-view" class="container result-view">
+        <h2 style="color: #4CAF50;">Code bon.</h2>
+        <p>Prenez la carte</p>
+        <div class="carte-cercle">48</div>
     </div>
 
+    <!-- ÉCRAN 3 : ÉCHEC / PÉNALITÉ -->
+    <div id="error-view" class="container result-view">
+        <div class="penalty-icon">
+            <!-- Icône vectorielle de pénalité (Croix rouge classique) -->
+            <svg viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="#c0392b" stroke="#e74c3c" stroke-width="4"/>
+                <line x1="30" y1="30" x2="70" y2="70" stroke="white" stroke-width="12" stroke-linecap="round"/>
+                <line x1="70" y1="30" x2="30" y2="70" stroke="white" stroke-width="12" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <h2 style="color: #e74c3c;">Code faux.</h2>
+        <p>Appuyez une fois sur le<br>bouton pénalité.</p>
+        <button class="retry-btn" onclick="resetDigicode()">Retour au digicode</button>
+    </div>
+
+    <!-- JAVASCRIPT : Logique du cadenas -->
     <script>
-        function checkPIN() {
-            // DÉFINIS TON CODE ICI (actuellement 1234)
-            const codeSecret = "1234"; 
-            const pinSaisi = document.getElementById("pin-input").value;
+        const secretCode = "7239";
+        let currentCode = "";
+        const screenEl = document.getElementById("screen");
 
-            if (pinSaisi === codeSecret) {
-                // Si le code est bon : on cache le cadenas, on montre le secret
-                document.getElementById("login-screen").style.display = "none";
-                document.getElementById("hidden-content").style.display = "block";
-            } else {
-                // Si le code est faux : on affiche l'erreur et on vide le champ
-                document.getElementById("error-msg").style.display = "block";
-                document.getElementById("pin-input").value = ""; 
+        function updateScreen() {
+            // Remplit avec des tirets pour toujours afficher 4 caractères
+            let display = currentCode.padEnd(4, "-");
+            screenEl.innerText = display;
+        }
+
+        function press(num) {
+            if (currentCode.length < 4) {
+                currentCode += num;
+                updateScreen();
             }
         }
-    </script>
 
+        function clearCode() {
+            currentCode = "";
+            updateScreen();
+        }
+
+        function checkCode() {
+            // Ne rien faire si on n'a pas tapé 4 chiffres
+            if (currentCode.length !== 4) return;
+
+            // Masque le digicode
+            document.getElementById('digicode-view').style.display = 'none';
+
+            // Affiche le bon écran selon le résultat
+            if (currentCode === secretCode) {
+                document.getElementById('success-view').style.display = 'flex';
+            } else {
+                document.getElementById('error-view').style.display = 'flex';
+            }
+        }
+
+        function resetDigicode() {
+            currentCode = "";
+            updateScreen();
+            document.getElementById('error-view').style.display = 'none';
+            document.getElementById('digicode-view').style.display = 'flex';
+        }
+    </script>
 </body>
 </html>
