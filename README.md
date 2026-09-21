@@ -1,13 +1,10 @@
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Empêche les smartphones de créer des liens bleus automatiques -->
     <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
     <title>Carte 21 - Machine</title>
     <style>
-        /* STYLE GLOBAL */
         body {
             font-family: "Arial Black", "Segoe UI", Roboto, sans-serif;
             background-color: #1a1a1a;
@@ -20,7 +17,6 @@
             user-select: none;
         }
 
-        /* BANNIÈRE VERTE UNLOCK (Carte Machine) */
         .banner {
             width: 100%;
             background-color: #4CAF50;
@@ -37,7 +33,6 @@
             z-index: 10;
         }
 
-        /* LE LISERÉ BLANC AUTOUR DU 21 */
         .cercle-21 {
             display: inline-block;
             border: 3px solid white;
@@ -48,7 +43,6 @@
             text-align: center;
         }
 
-        /* CONTENEUR PRINCIPAL */
         .container {
             display: flex;
             flex-direction: column;
@@ -59,7 +53,6 @@
             width: 100%;
         }
 
-        /* DIGICODE MÉTALLISÉ */
         .digicode {
             background: linear-gradient(135deg, #e6e6e6 0%, #b3b3b3 50%, #808080 100%);
             padding: 25px;
@@ -69,7 +62,6 @@
             width: 280px;
         }
 
-        /* ÉCRAN DIGITAL */
         .screen {
             background-color: #0a1f0a;
             color: #39ff14;
@@ -81,21 +73,19 @@
             letter-spacing: 10px;
             border: 3px solid #000;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
-            height: 60px; /* Hauteur fixe pour contenir les chiffres */
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* Empêche tout débordement */
+            overflow: hidden;
         }
 
-        /* CLAVIER NUMÉRIQUE */
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
         }
 
-        /* BOUTONS MÉTALLIQUES */
         .key {
             background: linear-gradient(to bottom, #f9f9f9, #c4c4c4);
             border: 2px solid #777;
@@ -117,7 +107,6 @@
         .key.clear { color: #d32f2f; }
         .key.enter { color: #388e3c; }
 
-        /* VUES DE RÉSULTAT */
         .result-view {
             display: none;
             flex-direction: column;
@@ -131,7 +120,7 @@
         .result-view h2 {
             font-size: 32px;
             margin-bottom: 10px;
-            white-space: nowrap; /* Force le texte sur une seule ligne */
+            white-space: nowrap;
         }
 
         .result-view p {
@@ -141,7 +130,6 @@
             margin-top: 0;
         }
 
-        /* CERCLE GRIS CARTE 48 */
         .carte-cercle {
             background: linear-gradient(135deg, #a0a0a0, #707070);
             color: white;
@@ -157,7 +145,6 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
         }
 
-        /* ICÔNE PÉNALITÉ */
         .penalty-icon {
             margin-bottom: 10px;
             animation: pulse 1s infinite alternate;
@@ -168,7 +155,6 @@
             to { transform: scale(1.1); }
         }
 
-        /* BOUTON RETOUR POUR PÉNALITÉ */
         .retry-btn {
             background-color: #333;
             color: white;
@@ -184,13 +170,10 @@
     </style>
 </head>
 <body>
-
-    <!-- Bannière haut de carte avec liseré -->
     <div class="banner">
         <span class="cercle-21">21</span>
     </div>
 
-    <!-- ÉCRAN 1 : LE DIGICODE -->
     <div id="digicode-view" class="container">
         <div class="digicode">
             <div class="screen" id="screen">----</div>
@@ -211,14 +194,12 @@
         </div>
     </div>
 
-    <!-- ÉCRAN 2 : SUCCÈS -->
     <div id="success-view" class="container result-view">
         <h2 style="color: #4CAF50;">Code bon.</h2>
         <p>Prenez la carte</p>
         <div class="carte-cercle">48</div>
     </div>
 
-    <!-- ÉCRAN 3 : ÉCHEC / PÉNALITÉ -->
     <div id="error-view" class="container result-view">
         <div class="penalty-icon">
             <svg viewBox="0 0 100 100" width="100" height="100">
